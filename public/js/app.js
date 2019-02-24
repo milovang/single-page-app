@@ -1854,6 +1854,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1862,6 +1868,7 @@ __webpack_require__.r(__webpack_exports__);
         body: ''
       },
       tasks: [],
+      errors: [],
       uri: 'http://localhost:8000/tasks'
     };
   },
@@ -1880,7 +1887,15 @@ __webpack_require__.r(__webpack_exports__);
 
         $("#create-modal").modal("hide");
       }).catch(function (error) {
-        console.log(error);
+        _this.errors = [];
+
+        if (error.response.data.errors.name) {
+          _this.errors.push(error.response.data.errors.name[0]);
+        }
+
+        if (error.response.data.errors.body) {
+          _this.errors.push(error.response.data.errors.body[0]);
+        }
       });
     },
     loadTasks: function loadTasks() {
@@ -37042,6 +37057,18 @@ var render = function() {
               _vm._m(3),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
+                _vm.errors.length > 0
+                  ? _c("div", { staticClass: "alert alert-danger" }, [
+                      _c(
+                        "ul",
+                        _vm._l(_vm.errors, function(error) {
+                          return _c("li", [_vm._v(_vm._s(error))])
+                        }),
+                        0
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
                   _c("label", { attrs: { for: "name" } }, [_vm._v("Name")]),
                   _vm._v(" "),
